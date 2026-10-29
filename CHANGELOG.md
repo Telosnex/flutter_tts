@@ -4,6 +4,11 @@
 
 ### Fixes
 
+- **Windows:** Fix `speak.onComplete` never firing, and `awaitSpeakCompletion`
+  never completing. Callbacks from worker threads were posted to the Flutter
+  view's child window, but the plugin's window delegate only receives
+  messages for the top-level window. They are now posted to the top-level
+  window.
 - **iOS:** Fix fatal `EXC_BREAKPOINT` in `synthesizeToFile` when the system
   voice emits `Int16` PCM buffers (notably Apple's Maui/Vocalizer compact
   voices on iOS 16/17). The audio file is now opened using the buffer's

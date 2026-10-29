@@ -7,7 +7,6 @@
 
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:integration_test/integration_test.dart';
@@ -15,9 +14,6 @@ import 'package:telosnex_web_test/telosnex_web_test.dart';
 
 const String _phrase = 'Telosnex continuous integration speech check.';
 const Duration _completionTimeout = Duration(seconds: 90);
-// On Windows the start callback is checked within this time; the completion
-// callback is not waited for (see the Windows branch in the test).
-const Duration _windowsStartTimeout = Duration(seconds: 30);
 
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -41,12 +37,7 @@ void main() {
     }
 
     final completed = Completer<void>();
-    final started = Completer<void>();
-    tts.setStartHandler(() {
-      if (!started.isCompleted) started.complete();
-    });
     tts.setCompletionHandler(() {
-      if (!started.isCompleted) started.complete();
       if (!completed.isCompleted) completed.complete();
     });
     tts.setErrorHandler((message) {
@@ -56,17 +47,6 @@ void main() {
     });
 
     await tts.speak(_phrase);
-    if (defaultTargetPlatform == TargetPlatform.windows) {
-      // SAPI's completion event (SpeakCompleteEvent) never fires on the
-      // Windows runner, which has no audio output: the start callback is
-      // sent at once, the completion never comes. Check the start, then skip.
-      await started.future.timeout(_windowsStartTimeout);
-      await tts.stop();
-      markTestSkipped('SAPI sent speak.onStart but never the completion event '
-          'on this Windows runner (no audio output): completion is not '
-          'tested here.');
-      return;
-    }
     await completed.future.timeout(
       _completionTimeout,
       onTimeout: () => throw TimeoutException(

@@ -70,8 +70,16 @@ void RunOnPlatformThread(std::function<void()> fn) {
 		// Do not invoke Flutter APIs from a worker thread when no HWND is bound.
 		return;
 	}
+	// The delegate from RegisterTopLevelWindowProcDelegate gets only the
+	// messages of the top-level window, not those of the Flutter view (a
+	// child window). The view gets its parent after the plugins register, so
+	// the top-level window is found here, not in BindPlatformThread.
+	HWND target = GetAncestor(g_flutter_hwnd, GA_ROOT);
+	if (target == nullptr) {
+		target = g_flutter_hwnd;
+	}
 	auto* task = new PlatformTask{std::move(fn)};
-	if (!PostMessage(g_flutter_hwnd, kPlatformTaskMsg, 0,
+	if (!PostMessage(target, kPlatformTaskMsg, 0,
 		reinterpret_cast<LPARAM>(task))) {
 		delete task;
 	}
