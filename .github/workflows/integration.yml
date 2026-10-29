@@ -38,11 +38,17 @@ jobs:
       - uses: Telosnex/telosnex_ci_tools/actions/setup-flutter@cba77fc0d4330f1bef81193c53cd7dd976f0ebcf # v0.5.3
       - run: flutter pub get
         working-directory: example
+      # The watchdog runs flutter through bash, which cannot start flutter's
+      # .bat wrapper on Windows: there the test runs directly.
       - uses: Telosnex/telosnex_ci_tools/actions/watch@cba77fc0d4330f1bef81193c53cd7dd976f0ebcf # v0.5.3
+        if: runner.os != 'Windows'
         with:
           idle-minutes: '10'
           run: flutter test integration_test/speak_test.dart -d macos -r expanded
           working-directory: example
+      - if: runner.os == 'Windows'
+        run: flutter test integration_test/speak_test.dart -d windows -r expanded
+        working-directory: example
 
   desktop-windows-x64:
     name: Windows x64
