@@ -524,7 +524,7 @@ class FlutterTts {
     final voices = await _channel.invokeMethod('getVoices');
     return voices;
   }
-  
+
   /// [Future] which invokes the platform specific method for getCurrentVoice
   /// Returns a `Hashmap<String, String>` containing a full voice info
   /// ***Android supported only***
