@@ -46,6 +46,11 @@ jobs:
           idle-minutes: '10'
           run: flutter test integration_test/speak_test.dart -d macos -r expanded
           working-directory: example
+      # VB-CABLE: the hosted Windows runners have no audio endpoints, and
+      # MediaPlayer needs one to play the speech and send its end event.
+      - if: runner.os == 'Windows'
+        shell: pwsh
+        run: tool/ci/install_vbcable.ps1
       - if: runner.os == 'Windows'
         run: flutter test integration_test/speak_test.dart -d windows -r expanded
         working-directory: example
