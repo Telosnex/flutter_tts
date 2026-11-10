@@ -35,12 +35,12 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: Telosnex/telosnex_ci_tools/actions/setup-flutter@c356a8d59e643d5fc8c552950fdd45c7e3bfea7f # v0.5.12
+      - uses: Telosnex/telosnex_ci_tools/actions/setup-flutter@bba81d85dab7716cc288df9877812dd3299ff11e # v0.5.14
       - run: flutter pub get
         working-directory: example
       # The watchdog runs flutter through bash, which cannot start flutter's
       # .bat wrapper on Windows: there the test runs directly.
-      - uses: Telosnex/telosnex_ci_tools/actions/watch@c356a8d59e643d5fc8c552950fdd45c7e3bfea7f # v0.5.12
+      - uses: Telosnex/telosnex_ci_tools/actions/watch@bba81d85dab7716cc288df9877812dd3299ff11e # v0.5.14
         if: runner.os != 'Windows'
         with:
           idle-minutes: '10'
@@ -75,12 +75,12 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: Telosnex/telosnex_ci_tools/actions/setup-flutter@c356a8d59e643d5fc8c552950fdd45c7e3bfea7f # v0.5.12
+      - uses: Telosnex/telosnex_ci_tools/actions/setup-flutter@bba81d85dab7716cc288df9877812dd3299ff11e # v0.5.14
       - run: flutter pub get
         working-directory: example
-      - uses: Telosnex/telosnex_ci_tools/actions/ios-simulator-boot@c356a8d59e643d5fc8c552950fdd45c7e3bfea7f # v0.5.12
+      - uses: Telosnex/telosnex_ci_tools/actions/ios-simulator-boot@bba81d85dab7716cc288df9877812dd3299ff11e # v0.5.14
         id: simulator
-      - uses: Telosnex/telosnex_ci_tools/actions/ios-flutter-test@c356a8d59e643d5fc8c552950fdd45c7e3bfea7f # v0.5.12
+      - uses: Telosnex/telosnex_ci_tools/actions/ios-flutter-test@bba81d85dab7716cc288df9877812dd3299ff11e # v0.5.14
         with:
           target: integration_test/speak_test.dart
           udid: ${{ steps.simulator.outputs.udid }}
@@ -94,14 +94,14 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: Telosnex/telosnex_ci_tools/actions/setup-flutter@c356a8d59e643d5fc8c552950fdd45c7e3bfea7f # v0.5.12
+      - uses: Telosnex/telosnex_ci_tools/actions/setup-flutter@bba81d85dab7716cc288df9877812dd3299ff11e # v0.5.14
       - run: flutter pub get
         working-directory: example
-      - uses: Telosnex/telosnex_ci_tools/actions/android-emulator@c356a8d59e643d5fc8c552950fdd45c7e3bfea7f # v0.5.12
+      - uses: Telosnex/telosnex_ci_tools/actions/android-emulator@bba81d85dab7716cc288df9877812dd3299ff11e # v0.5.14
         id: emulator
         with:
           api-level: '35'
-      - uses: Telosnex/telosnex_ci_tools/actions/watch@c356a8d59e643d5fc8c552950fdd45c7e3bfea7f # v0.5.12
+      - uses: Telosnex/telosnex_ci_tools/actions/watch@bba81d85dab7716cc288df9877812dd3299ff11e # v0.5.14
         with:
           idle-minutes: '10'
           run: flutter test integration_test/speak_test.dart -d ${{ steps.emulator.outputs.serial }} -r expanded
@@ -129,10 +129,10 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: Telosnex/telosnex_ci_tools/actions/setup-flutter@c356a8d59e643d5fc8c552950fdd45c7e3bfea7f # v0.5.12
+      - uses: Telosnex/telosnex_ci_tools/actions/setup-flutter@bba81d85dab7716cc288df9877812dd3299ff11e # v0.5.14
       - run: flutter pub get
         working-directory: example
-      - uses: Telosnex/telosnex_ci_tools/actions/web-driver@c356a8d59e643d5fc8c552950fdd45c7e3bfea7f # v0.5.12
+      - uses: Telosnex/telosnex_ci_tools/actions/web-driver@bba81d85dab7716cc288df9877812dd3299ff11e # v0.5.14
         with:
           browser: chrome
           artifact-name: web-chrome-${{ env.WASM == '' && 'dart2js' || 'dart2wasm' }}
