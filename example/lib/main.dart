@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io' show Platform;
 import 'dart:math';
 import 'package:flutter/foundation.dart';
+// Keep this example compatible with older Flutter SDKs.
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
